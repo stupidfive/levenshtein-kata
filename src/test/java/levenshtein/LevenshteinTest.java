@@ -1,6 +1,5 @@
 package levenshtein;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,31 +10,6 @@ class LevenshteinTest {
         assertLevenshtein("a", "a", 0);
     }
 
-    /**
-     *  distance = 1
-     * delete
-     * 一个字符的删除
-     * 多个字符删除
-     *
-     * insert
-     * 一个
-     * 多个
-     *
-     * substitute
-     * 一个
-     * 多个
-     *
-     * 综合
-     *
-     *
-     * "kitten" and "sitting"  3
-     *
-     *  kitten
-     *  sitting
-     *
-     *
-     *
-     */
     @Test
     void test_one_character_deletion() {
         assertLevenshtein("ab", "a", 1);
@@ -61,9 +35,29 @@ class LevenshteinTest {
     }
 
     @Test
-    @Disabled
-    void test2() {
-        assertLevenshtein("a", "abc", 2);
+    void test_recursive_substitution() {
+        assertLevenshtein("ab", "cd", 2);
+        assertLevenshtein("abc", "def", 3);
+        assertLevenshtein("abc", "aef", 2);
+    }
+
+    @Test
+    void test_recursive_deletion() {
+        assertLevenshtein("ab", "", 2);
+        assertLevenshtein("abc", "", 3);
+        assertLevenshtein("abc", "b", 2);
+    }
+
+    @Test
+    void test_recursive_insertion() {
+        assertLevenshtein("", "ab", 2);
+        assertLevenshtein("", "abc", 3);
+        assertLevenshtein("b", "abc", 2);
+    }
+
+    @Test
+    void test_kitten() {
+        assertLevenshtein("kitten", "sitting", 3);
     }
 
     private void assertLevenshtein(String word1, String word2, int expected) {
